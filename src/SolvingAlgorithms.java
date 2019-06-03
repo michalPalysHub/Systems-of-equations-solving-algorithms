@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class SolvingAlgorithms {
 
     private static String exceptionMessage = null;
@@ -28,6 +30,7 @@ public class SolvingAlgorithms {
 
 
     static void GaussianElimination(Matrix matrix_A, Matrix matrix_B){
+
         if (incorrectInput(matrix_A, matrix_B)){
             throw new IllegalArgumentException(exceptionMessage);
         }
@@ -176,16 +179,44 @@ public class SolvingAlgorithms {
         }
     }
 
+    private static boolean converges(Matrix matrix_A){
+        for (int i = 0; i < matrix_A.matrix.length; i++){
+            double diagonal = Math.abs(matrix_A.matrix[i][i]);
+            double tmpSum = 0;
+            for (int j = 0; j < matrix_A.matrix.length; j++){
+                if (i != j) tmpSum += Math.abs(matrix_A.matrix[i][j]);
+            }
+            if (tmpSum >= diagonal) return false;
+        }
+        return true;
+    }
 
-    static void GaussSeidel(Matrix matrix_A, Matrix matrix_B){
+    static void GaussJacobi(Matrix matrix_A, Matrix matrix_B){
         if (incorrectInput(matrix_A, matrix_B)){
             throw new IllegalArgumentException(exceptionMessage);
         }
 
+        if (!converges(matrix_A)){
+            System.err.println("The solution could not converge - matrix A is not diagonally dominant");
+        }
+
         int n = matrix_A.matrix.length;
-        Matrix matrix_L = new Matrix(n, n);
-        Matrix matrix_D = new Matrix(n, n);
-        Matrix matrix_U = new Matrix(n, n);
         Matrix matrix_X = new Matrix(n, 1);
+        for (int i = 0; i < n; i++) matrix_X.matrix[i][0] = 0;
+
+        int precision = 1000;
+
+        for (int k = 0; k < precision; k++){
+            for (int i = 0; i < n; i++){
+                double x0 = 0;
+                for (int j = 0; j < n; j++){
+                    if (i != j) x0 += matrix_A.matrix[i][j] * matrix_X.matrix[j][0];
+                }
+                matrix_X.matrix[i][0] = (matrix_B.matrix[i][0] - x0) / matrix_A.matrix[i][i];
+            }
+        }
+
+        System.out.println("\nMatrix X:");
+        matrix_X.print();
     }
 }
