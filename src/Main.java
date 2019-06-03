@@ -41,6 +41,7 @@ public class Main {
         System.out.println("Choose the algorithm to solve the system of equations:");
         System.out.println("\ta) Gaussian Elimination");
         System.out.println("\tb) LU Decomposition");
+        System.out.println("\tc) Gauss-Seidel method");
 
         Scanner sc = new Scanner(System.in);
         String a = sc.nextLine();
@@ -49,14 +50,21 @@ public class Main {
             case "a":
                 try {
                     SolvingAlgorithms.GaussianElimination(matrix_A, matrix_B);
-                } catch (DivisionByZeroException e) {
+                } catch (IllegalArgumentException e) {
                     e.printStackTrace();
                 }
                 break;
             case "b":
                 try {
                     SolvingAlgorithms.LUdecomposition(matrix_A, matrix_B);
-                } catch (DivisionByZeroException e) {
+                } catch (IllegalArgumentException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case "c":
+                try {
+                    SolvingAlgorithms.GaussSeidel(matrix_A, matrix_B);
+                } catch (IllegalArgumentException e) {
                     e.printStackTrace();
                 }
                 break;

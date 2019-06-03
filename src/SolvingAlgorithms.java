@@ -14,14 +14,20 @@ public class SolvingAlgorithms {
             }
         }
         if (matrix_A.matrix.length != matrix_B.matrix.length){
-            exceptionMessage = "Sizes for matrices A and B must equal respectively: [n x n], [1 x n]";
+            exceptionMessage = "Sizes for matrices A and B must equal respectively: [n x n], [n x 1]";
             return true;
         }
-
+        for (int i = 0; i < matrix_A.matrix.length; i++){
+            if (matrix_A.matrix[i][i] == 0){
+                exceptionMessage = "Division by zero! - diagonal elements cannot equal 0.";
+                return true;
+            }
+        }
         return false;
     }
 
-    static void GaussianElimination(Matrix matrix_A, Matrix matrix_B) throws DivisionByZeroException {
+
+    static void GaussianElimination(Matrix matrix_A, Matrix matrix_B){
         if (incorrectInput(matrix_A, matrix_B)){
             throw new IllegalArgumentException(exceptionMessage);
         }
@@ -35,9 +41,6 @@ public class SolvingAlgorithms {
         if (n == 1) matrix_X.matrix[0][0] = matrix_B.matrix[0][0] / matrix_A.matrix[0][0];
         else {
             for (int i = 0; i < n - 1; i++) {
-                if (matrix_A.matrix[i][i] == 0){
-                    throw new DivisionByZeroException("Division by zero!!!");
-                }
 
                 // Gaussian Elimination
                 for (int j = i + 1; j < n; j++) {
@@ -72,7 +75,8 @@ public class SolvingAlgorithms {
         matrix_X.print();
     }
 
-    static void LUdecomposition(Matrix matrix_A, Matrix matrix_B) throws DivisionByZeroException {
+
+    static void LUdecomposition(Matrix matrix_A, Matrix matrix_B){
         if (incorrectInput(matrix_A, matrix_B)){
             throw new IllegalArgumentException(exceptionMessage);
         }
@@ -100,9 +104,6 @@ public class SolvingAlgorithms {
             // Doolittle algorithm
 
             for (int i = 0; i < n; i++){
-                if (matrix_A.matrix[i][i] == 0){
-                    throw new DivisionByZeroException("Division by zero!!!");
-                }
 
                 // Upper Triangular
                 for (int j = 0; j < n; j++){
@@ -173,5 +174,18 @@ public class SolvingAlgorithms {
             System.out.println("\nU*X = Y ==> X:");
             matrix_X.print();
         }
+    }
+
+
+    static void GaussSeidel(Matrix matrix_A, Matrix matrix_B){
+        if (incorrectInput(matrix_A, matrix_B)){
+            throw new IllegalArgumentException(exceptionMessage);
+        }
+
+        int n = matrix_A.matrix.length;
+        Matrix matrix_L = new Matrix(n, n);
+        Matrix matrix_D = new Matrix(n, n);
+        Matrix matrix_U = new Matrix(n, n);
+        Matrix matrix_X = new Matrix(n, 1);
     }
 }
