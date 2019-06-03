@@ -35,6 +35,8 @@ public class SolvingAlgorithms {
             throw new IllegalArgumentException(exceptionMessage);
         }
 
+        int iterations = 0;
+
         int n = matrix_A.matrix.length;
         double tmp;
         Matrix matrix_X = new Matrix(n, 1);
@@ -54,6 +56,7 @@ public class SolvingAlgorithms {
                             matrix_A.matrix[j][k] -= tmp * matrix_A.matrix[i][k];
                         }
                         matrix_B.matrix[j][0] -= tmp * matrix_B.matrix[i][0];
+                        iterations++;
                     }
                 }
             }
@@ -68,6 +71,7 @@ public class SolvingAlgorithms {
 
                 for (int j = n - 1; j >= i + 1; j--){
                     tmp -= matrix_A.matrix[i][j] * matrix_X.matrix[j][0];
+                    iterations++;
                 }
 
                 matrix_X.matrix[i][0] = tmp / matrix_A.matrix[i][i];
@@ -76,6 +80,7 @@ public class SolvingAlgorithms {
 
         System.out.println("\nMatrix X:");
         matrix_X.print();
+        System.out.println("\nIterations needed: " + iterations);
     }
 
 
@@ -85,6 +90,7 @@ public class SolvingAlgorithms {
         }
 
         int n = matrix_A.matrix.length;
+        int iterations = 0;
         Matrix matrix_L = new Matrix(n, n);
         Matrix matrix_U = new Matrix(n, n);
         Matrix matrix_Y = new Matrix(n, 1);
@@ -118,6 +124,7 @@ public class SolvingAlgorithms {
                    }
 
                    matrix_U.matrix[i][j] = matrix_A.matrix[i][j] - s;
+                   iterations++;
                 }
 
                 // Lower Triangular
@@ -130,6 +137,7 @@ public class SolvingAlgorithms {
 
                         for (int k = 0; k < i; k++) {
                             s += matrix_L.matrix[j][k] * matrix_U.matrix[k][i];
+                            iterations++;
                         }
 
                         matrix_L.matrix[j][i] = (matrix_A.matrix[j][i] - s) / matrix_U.matrix[i][i];
@@ -153,6 +161,7 @@ public class SolvingAlgorithms {
 
                 for (int j = 0; j < i; j++){
                     tmp -= matrix_L.matrix[i][j] * matrix_Y.matrix[j][0];
+                    iterations++;
                 }
 
                 matrix_Y.matrix[i][0] = tmp / matrix_L.matrix[i][i];
@@ -169,6 +178,7 @@ public class SolvingAlgorithms {
 
                 for (int j = n - 1; j >= i + 1; j--){
                     tmp -= matrix_U.matrix[i][j] * matrix_X.matrix[j][0];
+                    iterations++;
                 }
 
                 matrix_X.matrix[i][0] = tmp / matrix_U.matrix[i][i];
@@ -176,6 +186,7 @@ public class SolvingAlgorithms {
 
             System.out.println("\nU*X = Y ==> X:");
             matrix_X.print();
+            System.out.println("\nIterations needed: " + iterations);
         }
     }
 
@@ -200,6 +211,7 @@ public class SolvingAlgorithms {
             System.err.println("The solution could not converge - matrix A is not diagonally dominant");
         }
 
+        int iterations = 0;
         int n = matrix_A.matrix.length;
         Matrix matrix_X = new Matrix(n, 1);
         for (int i = 0; i < n; i++) matrix_X.matrix[i][0] = 0;
@@ -210,7 +222,7 @@ public class SolvingAlgorithms {
             for (int i = 0; i < n; i++){
                 double x0 = 0;
                 for (int j = 0; j < n; j++){
-                    if (i != j) x0 += matrix_A.matrix[i][j] * matrix_X.matrix[j][0];
+                    if (i != j) x0 += matrix_A.matrix[i][j] * matrix_X.matrix[j][0]; iterations++;
                 }
                 matrix_X.matrix[i][0] = (matrix_B.matrix[i][0] - x0) / matrix_A.matrix[i][i];
             }
@@ -218,5 +230,7 @@ public class SolvingAlgorithms {
 
         System.out.println("\nMatrix X:");
         matrix_X.print();
+        System.out.println("\nPrecision set: " + precision);
+        System.out.println("\nIterations needed: " + iterations);
     }
 }
