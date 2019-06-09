@@ -1,4 +1,3 @@
-import java.util.Scanner;
 
 public class SolvingAlgorithms {
 
@@ -216,7 +215,7 @@ public class SolvingAlgorithms {
         Matrix matrix_X = new Matrix(n, 1);
         for (int i = 0; i < n; i++) matrix_X.matrix[i][0] = 0;
 
-        int precision = 1000;
+        int precision = 6;
 
         for (int k = 0; k < precision; k++){
             for (int i = 0; i < n; i++){
